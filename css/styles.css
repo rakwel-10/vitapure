@@ -512,6 +512,9 @@ strong { font-weight: 500; }
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
+/* Space below the tiles so they don't run into the navy authority banner.
+   Matches the space above them (the improve section's bottom padding). */
+.categories { margin-bottom: var(--section-y); }
 .tile {
   position: relative;
   aspect-ratio: 3 / 4; /* no max-height: capping height shrank the width and opened gaps */
