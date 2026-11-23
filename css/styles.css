@@ -506,11 +506,15 @@ strong { font-weight: 500; }
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
+  /* Side margins sit on the row, not between tiles. The width cap keeps the
+     3:4 tiles from getting too tall on wide screens. */
+  max-width: 1600px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
 }
 .tile {
   position: relative;
-  aspect-ratio: 3 / 4;
-  max-height: 760px;
+  aspect-ratio: 3 / 4; /* no max-height: capping height shrank the width and opened gaps */
   overflow: hidden;
   border-radius: 0;
   background: var(--mist);
