@@ -33,7 +33,7 @@ For porting this mockup into the WordPress theme. Every section in `index.html` 
 
 ## Open items before launch
 - [ ] **Reviews:** connect the live Google reviews feed or widget. The cards are currently the 5 testimonials already on the live homepage, verbatim. Confirm the review count (92).
-- [ ] **Body tile photo:** the site has no on-topic photo (an Exion Body or Emtone session), so a consult photo is standing in. Keep the replacement modest; the client flagged "too much skin" in the reference site.
+- [ ] **Wellness and Body tile photos are Unsplash stock placeholders** (free Unsplash License), chosen to show women: a guest in a robe in a spa suite (Wellness) and a provider treating a woman's abdomen (Body). Replace them with the client's own photos when available. The Body photo shows bare skin, so confirm it with the client first: their PDF flagged "too much skin" on the reference site.
 - [ ] **Category landing pages:** Wellness, Face, and Body are "#" in the live menu. The tile titles link to /services/ until real pages exist.
 - [ ] **Office hours:** not on the live site; add them to the footer if wanted.
 - [ ] **Fonts:** Outfit is the live body font and is kept. Marcellus is new, for headings only. Enqueue it in WordPress.
