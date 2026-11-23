@@ -412,6 +412,10 @@ strong { font-weight: 500; }
   align-items: end;
 }
 .improve__intro { color: var(--text-soft); max-width: 38rem; }
+/* Centered, stacked variant: used by index.html only (index2 keeps two columns) */
+.improve__head--center { grid-template-columns: 1fr; gap: 1.25rem; justify-items: center; text-align: center; }
+.improve__head--center .improve__intro { margin-inline: auto; }
+.filter--center { margin-inline: auto; }
 
 .filter { display: flex; flex-wrap: wrap; gap: 0; margin-top: 2.5rem; border: 1px solid var(--line); width: max-content; max-width: 100%; }
 .filter__btn {
