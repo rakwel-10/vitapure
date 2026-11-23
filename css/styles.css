@@ -461,6 +461,8 @@ strong { font-weight: 500; }
   transition: opacity 0.25s;
 }
 .concern.is-dimmed { opacity: 0.28; }
+/* index.html variant: filtered-out concerns are removed, not faded (index2 keeps the fade) */
+.concerns--hide-dimmed .concern.is-dimmed { display: none; }
 .concern__link {
   display: flex;
   align-items: baseline;
