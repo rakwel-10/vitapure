@@ -237,8 +237,11 @@
          ===================================================================== -->
     <section class="categories" aria-labelledby="categories-title">
       <h2 class="visually-hidden" id="categories-title">Treatment categories</h2>
-      <div class="tiles">
+      <!-- [REVAMP:CHANGED] index.html: on hover the label fades out and a centered panel fades in (tiles--fade).
+           .tile__label is a visual-only copy of the title, hidden from screen readers. -->
+      <div class="tiles tiles--fade">
         <article class="tile" id="cat-wellness" data-group="wellness">
+          <span class="tile__label" aria-hidden="true">Wellness</span>
           <!-- [REVAMP:CHANGED] stock placeholder: a woman in a robe in a spa suite.
                source: https://unsplash.com/photos/I3VF9Cu4agc (Unsplash License).
                Swap for a client photo of a female IV guest when available. -->
@@ -257,6 +260,7 @@
         </article>
 
         <article class="tile" id="cat-face" data-group="face">
+          <span class="tile__label" aria-hidden="true">Face</span>
           <!-- source: https://www.vitapureinfusions.com/wp-content/uploads/2025/06/facials-1.png -->
           <img class="tile__img" src="assets/img/tile-face-hydrafacial.png" alt="An aesthetician performing a HydraFacial" loading="lazy" style="object-position: 62% 50%;" />
           <div class="tile__body">
@@ -275,6 +279,7 @@
         </article>
 
         <article class="tile" id="cat-body" data-group="body">
+          <span class="tile__label" aria-hidden="true">Body</span>
           <!-- [REVAMP:CHANGED] stock placeholder: a provider treating a woman's abdomen (body contouring).
                source: https://unsplash.com/photos/BDwQHbWr9Lo (Unsplash License).
                Swap for a client photo of an Exion Body or Emtone session when available. -->

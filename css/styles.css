@@ -601,6 +601,57 @@ strong { font-weight: 500; }
   .tile__list { max-height: none; margin-top: 1rem; }
 }
 
+/* --------------------------------------------------------------------------
+   index.html variant (.tiles--fade): no sliding. On hover or focus the bottom
+   label fades out and a centered panel, inset from the tile edges, fades in.
+   Desktop pointers only; touch and mobile keep the stacked layout above/below.
+   -------------------------------------------------------------------------- */
+.tile__label { display: none; }
+@media (hover: hover) and (min-width: 861px) {
+  .tiles--fade .tile__label {
+    display: block;
+    position: absolute;
+    left: clamp(1.25rem, 2.5vw, 2.25rem);
+    bottom: 1.75rem;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 1.4rem + 1.8vw, 3rem);
+    line-height: 1;
+    color: var(--white);
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .tiles--fade .tile__body {
+    top: 50%;
+    bottom: auto;
+    left: clamp(1.25rem, 3vw, 2.5rem);
+    right: clamp(1.25rem, 3vw, 2.5rem);
+    transform: translateY(-50%);
+    padding: clamp(1.5rem, 2.5vw, 2.25rem);
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--navy);
+    box-shadow: inset 0 3px 0 var(--gold);
+    opacity: 0;
+    pointer-events: none; /* still reachable by keyboard; focus reveals it */
+    transition: opacity 0.35s ease;
+  }
+  .tiles--fade .tile__list { max-height: none; margin-top: 1rem; transition: none; }
+  .tiles--fade .tile::after { transition: background-color 0.35s ease; }
+
+  .tiles--fade .tile:hover .tile__body,
+  .tiles--fade .tile:focus-within .tile__body,
+  .tiles--fade .tile.is-highlight .tile__body { opacity: 1; pointer-events: auto; }
+  .tiles--fade .tile:hover .tile__label,
+  .tiles--fade .tile:focus-within .tile__label,
+  .tiles--fade .tile.is-highlight .tile__label { opacity: 0; }
+  .tiles--fade .tile:hover::after,
+  .tiles--fade .tile:focus-within::after,
+  .tiles--fade .tile.is-highlight::after { background-color: rgba(18, 41, 71, 0.25); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tiles--fade .tile__body, .tiles--fade .tile__label { transition: none; }
+}
+
 @media (max-width: 860px) {
   .tiles { grid-template-columns: 1fr; }
   .tile { aspect-ratio: auto; max-height: none; display: grid; }
