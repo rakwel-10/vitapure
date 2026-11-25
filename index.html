@@ -150,76 +150,126 @@
           <p class="improve__intro">We offer personalized wellness and aesthetic treatments in Richmond, VA, including IV therapy, Botox and dermal fillers, advanced skin treatments, body contouring, and medical weight loss, all designed to help you feel refreshed and confident in your skin.</p>
         </div>
 
-        <div class="filter filter--center" role="group" aria-label="Show concerns for">
-          <button type="button" class="filter__btn" data-filter="all" aria-pressed="true">All</button>
-          <button type="button" class="filter__btn" data-filter="wellness" aria-pressed="false">Wellness</button>
-          <button type="button" class="filter__btn" data-filter="face" aria-pressed="false">Face</button>
-          <button type="button" class="filter__btn" data-filter="body" aria-pressed="false">Body</button>
-        </div>
-
-        <div class="improve__grid">
-          <figure class="improve__media" aria-hidden="true">
-            <!-- Images swap via JS from each concern's data-img. Default: fine lines.
-                 source: https://www.vitapureinfusions.com/wp-content/uploads/2024/07/About.png -->
-            <img class="improve__img" src="assets/img/concern-fine-lines.png" alt="" style="object-position: 62% 40%;" />
+        <!-- [REVAMP:CHANGED] index.html: interactive body map (client request).
+             Replaces, in index.html only:
+               - [REVAMP:REMOVED] the All / Wellness / Face / Body filter buttons (the dots do this now)
+               - [REVAMP:REMOVED] the swapping photo and the list of six concerns
+             index2.html still has the photo + list version.
+             How it works: each .hotspot sits at --x / --y (percent of the photo). Hovering, focusing,
+             or tapping a dot shows its .bodymap__panel on the right (JS: initBodyMap).
+             The "See all" link scrolls to and highlights the matching Wellness / Face / Body tile.
+             To move a dot, change its --x / --y. To add an area, add a button + a panel with matching ids. -->
+        <div class="bodymap">
+          <figure class="bodymap__figure">
+            <!-- stock placeholder. source: https://unsplash.com/photos/Z72YujnOrlY (Unsplash License).
+                 If it's swapped, the dot positions need re-checking against the new photo. -->
+            <img class="bodymap__img" src="assets/img/improve-body-map.jpg" alt="A woman in a fitted workout set, marked with treatment areas" width="1200" height="1800" />
+            <button type="button" class="hotspot" data-area="face" data-side="left" style="--x: 39%; --y: 23.5%;" aria-controls="area-face" aria-pressed="true">
+              <span class="hotspot__dot" aria-hidden="true"></span>
+              <span class="hotspot__label">Face</span>
+            </button>
+            <button type="button" class="hotspot" data-area="arms" data-side="right" style="--x: 63%; --y: 39%;" aria-controls="area-arms" aria-pressed="false">
+              <span class="hotspot__dot" aria-hidden="true"></span>
+              <span class="hotspot__label">Arms &amp; underarms</span>
+            </button>
+            <button type="button" class="hotspot" data-area="wellness" data-side="left" style="--x: 29%; --y: 57%;" aria-controls="area-wellness" aria-pressed="false">
+              <span class="hotspot__dot" aria-hidden="true"></span>
+              <span class="hotspot__label">Wellness</span>
+            </button>
+            <button type="button" class="hotspot" data-area="stomach" data-side="right" style="--x: 45%; --y: 58%;" aria-controls="area-stomach" aria-pressed="false">
+              <span class="hotspot__dot" aria-hidden="true"></span>
+              <span class="hotspot__label">Stomach &amp; waist</span>
+            </button>
+            <button type="button" class="hotspot" data-area="pelvic" data-side="left" style="--x: 42.5%; --y: 72%;" aria-controls="area-pelvic" aria-pressed="false">
+              <span class="hotspot__dot" aria-hidden="true"></span>
+              <span class="hotspot__label">Pelvic floor</span>
+            </button>
+            <button type="button" class="hotspot" data-area="thighs" data-side="right" style="--x: 39%; --y: 89%;" aria-controls="area-thighs" aria-pressed="false">
+              <span class="hotspot__dot" aria-hidden="true"></span>
+              <span class="hotspot__label">Thighs, buttocks &amp; legs</span>
+            </button>
           </figure>
 
-          <!-- [REVAMP:CHANGED] index.html hides non-matching concerns instead of fading them -->
-          <ul class="concerns concerns--hide-dimmed" id="concern-list">
-            <li class="concern" data-group="face" data-img="assets/img/concern-fine-lines.png" data-pos="62% 40%">
-              <a class="concern__link" href="#cat-face">
-                <span class="concern__title">Fine lines &amp; signs of aging</span>
-                <span class="concern__group">Face</span>
-              </a>
-              <p class="concern__text">Soften expression lines and restore lost volume so you look as rested as you feel.</p>
-              <p class="concern__tx">Often treated with <a href="https://www.vitapureinfusions.com/medspa-services/injectables/">Botox &amp; fillers</a>, <a href="https://www.vitapureinfusions.com/morpheus8/">Morpheus8</a>, and <a href="https://www.vitapureinfusions.com/emface-in-richmond-virginia/">EmFace</a>.</p>
-            </li>
-            <li class="concern" data-group="face" data-img="assets/img/concern-pigmentation.png" data-pos="45% 50%">
-              <!-- source: https://www.vitapureinfusions.com/wp-content/uploads/2024/07/Med-Spa.png -->
-              <a class="concern__link" href="#cat-face">
-                <span class="concern__title">Pigmentation &amp; dark spots</span>
-                <span class="concern__group">Face</span>
-              </a>
-              <p class="concern__text">Fade sun damage and uneven patches for a clearer, more even complexion.</p>
-              <p class="concern__tx">Often treated with <a href="https://www.vitapureinfusions.com/medspa-services/facial-services/">peels and HydraFacial</a> and <a href="https://www.vitapureinfusions.com/rf-microneedling-in-richmond-va/">RF microneedling</a>.</p>
-            </li>
-            <li class="concern" data-group="face" data-img="assets/img/concern-acne.jpg" data-pos="50% 40%">
-              <!-- source: https://www.vitapureinfusions.com/wp-content/uploads/2024/04/Facial_Resized.jpg -->
-              <a class="concern__link" href="#cat-face">
-                <span class="concern__title">Acne &amp; acne scarring</span>
-                <span class="concern__group">Face</span>
-              </a>
-              <p class="concern__text">Calm active breakouts, then smooth the texture they leave behind.</p>
-              <p class="concern__tx">Often treated with <a href="https://www.vitapureinfusions.com/medspa-services/facial-services/">medical facials</a> and <a href="https://www.vitapureinfusions.com/rf-microneedling-in-richmond-va/">RF microneedling</a>.</p>
-            </li>
-            <li class="concern" data-group="body" data-img="assets/img/tile-body-stock.jpg" data-pos="50% 50%">
-              <!-- source: https://unsplash.com/photos/BDwQHbWr9Lo (Unsplash License, stock placeholder) -->
-              <a class="concern__link" href="#cat-body">
-                <span class="concern__title">Body contouring &amp; skin tightening</span>
-                <span class="concern__group">Body</span>
-              </a>
-              <p class="concern__text">Tone, tighten, and smooth the areas that diet and exercise don’t reach.</p>
-              <p class="concern__tx">Often treated with <a href="https://www.vitapureinfusions.com/exion-body-in-richmond-virginia/">Exion Body</a> and <a href="https://www.vitapureinfusions.com/cellulite-treatment-in-richmond-virginia/">Emtone</a>.</p>
-            </li>
-            <li class="concern" data-group="wellness" data-img="assets/img/hero-consult.jpg" data-pos="72% 50%">
-              <!-- source: https://www.vitapureinfusions.com/wp-content/uploads/2024/10/vita-new-banner3-2.jpg -->
-              <a class="concern__link" href="#cat-wellness">
-                <span class="concern__title">Medical weight loss</span>
-                <span class="concern__group">Wellness</span>
-              </a>
-              <p class="concern__text">A provider-supervised program with regular check-ins and body composition tracking.</p>
-              <p class="concern__tx">See our <a href="https://www.vitapureinfusions.com/wellness-services/weight-loss/">weight loss program</a>.</p>
-            </li>
-            <li class="concern" data-group="wellness" data-img="assets/img/concern-wellness-iv.png" data-pos="45% 40%">
-              <!-- source: https://www.vitapureinfusions.com/wp-content/uploads/2025/06/iv-therapy-1.png -->
-              <a class="concern__link" href="#cat-wellness">
-                <span class="concern__title">Energy, hydration &amp; balance</span>
-                <span class="concern__group">Wellness</span>
-              </a>
-              <p class="concern__text">Recover faster and feel like yourself again, whether you’re run down, training hard, or rebalancing hormones.</p>
-              <p class="concern__tx">Often treated with <a href="https://www.vitapureinfusions.com/wellness-services/iv-therapy/">IV therapy</a>, <a href="https://www.vitapureinfusions.com/wellness-services/vitamin-shots/">vitamin shots</a>, and <a href="https://www.vitapureinfusions.com/bioidentical-hormone-replacement-therapy-in-richmond-va/">hormone therapy</a>.</p>
-            </li>
-          </ul>
+          <div class="bodymap__side">
+            <p class="bodymap__hint">Hover over or tap a dot to see what we treat in that area.</p>
+            <div class="bodymap__panels" aria-live="polite">
+            <div class="bodymap__panel" id="area-face" data-group="face">
+              <span class="bodymap__group">Face</span>
+              <h3 class="bodymap__title">Face</h3>
+              <p class="bodymap__concerns">Fine lines and wrinkles, lost volume, pigmentation and dark spots, acne and scarring.</p>
+              <p class="bodymap__label">Treatments</p>
+              <ul class="bodymap__tx">
+                <li><a href="https://www.vitapureinfusions.com/medspa-services/injectables/">Botox &amp; Fillers</a></li>
+                <li><a href="https://www.vitapureinfusions.com/medspa-services/facial-services/">Facials</a></li>
+                <li><a href="https://www.vitapureinfusions.com/rf-microneedling-in-richmond-va/">RF Microneedling</a></li>
+                <li><a href="https://www.vitapureinfusions.com/morpheus8/">Morpheus8</a></li>
+                <li><a href="https://www.vitapureinfusions.com/emface-in-richmond-virginia/">EmFace</a></li>
+                <li><a href="https://www.vitapureinfusions.com/exion-face-in-richmond-virginia/">Exion Face</a></li>
+                <li><a href="https://www.vitapureinfusions.com/medspa-services/lashes-brows/">Lashes &amp; Brows</a></li>
+              </ul>
+              <a class="bodymap__more" href="#cat-face">See all Face treatments</a>
+            </div>
+            <div class="bodymap__panel" id="area-arms" data-group="body" hidden>
+              <span class="bodymap__group">Body</span>
+              <h3 class="bodymap__title">Arms &amp; underarms</h3>
+              <p class="bodymap__concerns">Unwanted hair and loose, crepey skin.</p>
+              <p class="bodymap__label">Treatments</p>
+              <ul class="bodymap__tx">
+                <li><a href="https://www.vitapureinfusions.com/medspa-services/laser-hair-removal-waxing/">Laser Hair Removal &amp; Waxing</a></li>
+                <li><a href="https://www.vitapureinfusions.com/exion-body-in-richmond-virginia/">Exion Body</a></li>
+              </ul>
+              <a class="bodymap__more" href="#cat-body">See all Body treatments</a>
+            </div>
+            <div class="bodymap__panel" id="area-wellness" data-group="wellness" hidden>
+              <span class="bodymap__group">Wellness</span>
+              <h3 class="bodymap__title">Whole-body wellness</h3>
+              <p class="bodymap__concerns">Low energy, dehydration, hormone imbalance, and weight that won’t shift on its own.</p>
+              <p class="bodymap__label">Treatments</p>
+              <ul class="bodymap__tx">
+                <li><a href="https://www.vitapureinfusions.com/wellness-services/iv-therapy/">IV Therapy</a></li>
+                <li><a href="https://www.vitapureinfusions.com/wellness-services/vitamin-shots/">Vitamin Shots</a></li>
+                <li><a href="https://www.vitapureinfusions.com/bioidentical-hormone-replacement-therapy-in-richmond-va/">Hormone Replacement Therapy</a></li>
+                <li><a href="https://www.vitapureinfusions.com/wellness-services/weight-loss/">Medical Weight Loss</a></li>
+                <li><a href="https://www.vitapureinfusions.com/wellness-services/mobile-iv-therapy/">Mobile IV Events</a></li>
+              </ul>
+              <a class="bodymap__more" href="#cat-wellness">See all Wellness treatments</a>
+            </div>
+            <div class="bodymap__panel" id="area-stomach" data-group="body" hidden>
+              <span class="bodymap__group">Body</span>
+              <h3 class="bodymap__title">Stomach &amp; waist</h3>
+              <p class="bodymap__concerns">Stubborn fat, loose skin, and core muscle tone.</p>
+              <p class="bodymap__label">Treatments</p>
+              <ul class="bodymap__tx">
+                <li><a href="https://www.vitapureinfusions.com/exion-body-in-richmond-virginia/">Exion Body</a></li>
+                <li><a href="https://www.vitapureinfusions.com/cellulite-treatment-in-richmond-virginia/">Emtone</a></li>
+                <li><a href="https://www.vitapureinfusions.com/wellness-services/weight-loss/">Medical Weight Loss</a></li>
+              </ul>
+              <a class="bodymap__more" href="#cat-body">See all Body treatments</a>
+            </div>
+            <div class="bodymap__panel" id="area-pelvic" data-group="body" hidden>
+              <span class="bodymap__group">Body</span>
+              <h3 class="bodymap__title">Pelvic floor</h3>
+              <p class="bodymap__concerns">Bladder leaks and weak pelvic floor muscles, often after childbirth or with age.</p>
+              <p class="bodymap__label">Treatments</p>
+              <ul class="bodymap__tx">
+                <li><a href="https://emsellarva.com/">Emsella</a></li>
+              </ul>
+              <a class="bodymap__more" href="#cat-body">See all Body treatments</a>
+            </div>
+            <div class="bodymap__panel" id="area-thighs" data-group="body" hidden>
+              <span class="bodymap__group">Body</span>
+              <h3 class="bodymap__title">Thighs, buttocks &amp; legs</h3>
+              <p class="bodymap__concerns">Cellulite, toning, and unwanted hair.</p>
+              <p class="bodymap__label">Treatments</p>
+              <ul class="bodymap__tx">
+                <li><a href="https://www.vitapureinfusions.com/cellulite-treatment-in-richmond-virginia/">Emtone</a></li>
+                <li><a href="https://www.vitapureinfusions.com/exion-body-in-richmond-virginia/">Exion Body</a></li>
+                <li><a href="https://www.vitapureinfusions.com/medspa-services/laser-hair-removal-waxing/">Laser Hair Removal &amp; Waxing</a></li>
+              </ul>
+              <a class="bodymap__more" href="#cat-body">See all Body treatments</a>
+            </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

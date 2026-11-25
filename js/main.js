@@ -189,6 +189,48 @@
   }
 
   /* ------------------------------------------------------------------
+     [REVAMP:CHANGED] Body map (index.html only)
+     Hovering, focusing, or tapping a dot shows that area's panel.
+     The selection stays when the pointer leaves, so the panel doesn't flicker.
+     "See all … treatments" scrolls to the matching tile (smooth-scroll handler)
+     and briefly highlights it.
+     ------------------------------------------------------------------ */
+  function initBodyMap() {
+    var spots = document.querySelectorAll(".hotspot");
+    if (!spots.length) return;
+    var panels = document.querySelectorAll(".bodymap__panel");
+    var tiles = document.querySelectorAll(".tile");
+
+    function show(area) {
+      spots.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.area === area)); });
+      panels.forEach(function (p) { p.hidden = p.id !== "area-" + area; });
+    }
+
+    spots.forEach(function (b) {
+      b.addEventListener("mouseenter", function () { show(b.dataset.area); });
+      b.addEventListener("focus", function () { show(b.dataset.area); });
+      b.addEventListener("click", function () {
+        show(b.dataset.area);
+        // On narrow screens the panel sits under the photo, so bring it into view after a tap
+        if (window.innerWidth <= 860) {
+          var panel = document.getElementById("area-" + b.dataset.area);
+          if (panel) panel.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "nearest" });
+        }
+      });
+    });
+
+    document.querySelectorAll(".bodymap__more").forEach(function (a) {
+      a.addEventListener("click", function () {
+        var group = a.closest(".bodymap__panel").dataset.group;
+        tiles.forEach(function (t) { t.classList.toggle("is-highlight", t.dataset.group === group); });
+        setTimeout(function () {
+          tiles.forEach(function (t) { t.classList.remove("is-highlight"); });
+        }, 3200);
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------------
      [REVAMP:CHANGED] Google reviews: two rows moving in opposite directions.
      Each track is filled until one copy is wider than the viewport, then
      the whole set is cloned once. The CSS animation moves -50%, so the loop
@@ -267,6 +309,7 @@
     initNav();
     initSmoothScroll();
     initConcerns();
+    initBodyMap();
     initMarquee();
     initYear();
   }

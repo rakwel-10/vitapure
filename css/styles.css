@@ -505,6 +505,155 @@ strong { font-weight: 500; }
 }
 
 /* ==========================================================================
+   [REVAMP:CHANGED] BODY MAP (index.html only)
+   A photo with dots on each treatment area; the panel on the right shows
+   the hovered, focused, or tapped area. Dots are placed with --x / --y.
+   ========================================================================== */
+.bodymap {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+.bodymap__figure {
+  position: relative;
+  max-width: 480px;
+  width: 100%;
+  justify-self: end;
+}
+.bodymap__img { display: block; width: 100%; height: auto; }
+
+/* Hotspot: a 44px hit area with a small dot, plus a label on a short leader line */
+.hotspot {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  z-index: 1;
+}
+.hotspot__dot {
+  position: absolute;
+  inset: 13px;
+  border-radius: 50%; /* a dot is round by nature; the no-rounded-corners rule is about boxes */
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45), 0 2px 8px rgba(18, 41, 71, 0.35);
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.hotspot__dot::after { /* soft pulse ring so the dots read as interactive */
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hotspot__dot::after { animation: hotspot-pulse 2.4s ease-out infinite; }
+}
+@keyframes hotspot-pulse {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.hotspot__label {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 22px);
+  transform: translateY(-50%);
+  padding: 0.3rem 0.65rem;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--navy);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.2;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.hotspot__label::before { /* leader line from the dot to the label */
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: 22px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.9);
+}
+.hotspot[data-side="left"] .hotspot__label { left: auto; right: calc(100% + 22px); }
+.hotspot[data-side="left"] .hotspot__label::before { right: auto; left: 100%; }
+
+.hotspot:hover .hotspot__dot,
+.hotspot[aria-pressed="true"] .hotspot__dot { background: var(--gold); transform: scale(1.15); }
+.hotspot:hover .hotspot__label,
+.hotspot[aria-pressed="true"] .hotspot__label { background: var(--navy); color: var(--white); }
+.hotspot:focus-visible { outline: none; }
+.hotspot:focus-visible .hotspot__dot { outline: 2px solid var(--white); outline-offset: 4px; }
+
+/* Panel */
+.bodymap__side { max-width: 34rem; }
+.bodymap__hint { color: var(--text-soft); font-size: 0.9375rem; margin-bottom: 1.25rem; }
+.bodymap__panel {
+  border-top: 3px solid var(--gold);
+  background: var(--white);
+  box-shadow: 0 0 0 1px var(--line);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+}
+.bodymap__panel[hidden] { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .bodymap__panel { animation: bodymap-in 0.3s ease; }
+}
+@keyframes bodymap-in { from { opacity: 0; } to { opacity: 1; } }
+.bodymap__group {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--gold);
+  color: var(--gold-ink);
+  font-size: 0.8125rem;
+}
+.bodymap__title {
+  margin-top: 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 1.3rem + 1.3vw, 2.4rem);
+  line-height: 1.1;
+  color: var(--navy);
+}
+.bodymap__concerns { margin-top: 0.75rem; color: var(--text-soft); }
+.bodymap__label { margin-top: 1.5rem; font-size: 0.8125rem; font-weight: 600; color: var(--navy); }
+.bodymap__tx { margin-top: 0.4rem; list-style: none; padding: 0; }
+.bodymap__tx a {
+  display: block;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--navy);
+  text-decoration: none;
+  transition: color 0.2s, padding-left 0.2s;
+}
+.bodymap__tx a:hover { color: var(--gold-ink); padding-left: 0.35rem; }
+.bodymap__more {
+  display: inline-block;
+  margin-top: 1.25rem;
+  color: var(--gold-ink);
+  font-weight: 500;
+  text-underline-offset: 0.25em;
+}
+
+@media (max-width: 860px) {
+  .bodymap { grid-template-columns: 1fr; }
+  .bodymap__figure { justify-self: center; max-width: 420px; }
+  .bodymap__side { max-width: none; }
+}
+/* Phones: labels would crowd the photo, so show dots only; the panel names the area */
+@media (max-width: 520px) {
+  .hotspot__label { display: none; }
+}
+
+/* ==========================================================================
    [REVAMP:CHANGED] CATEGORY GRID: three gapless tiles
    gap: 0 and border-radius: 0 are intentional (client requirement).
    ========================================================================== */
