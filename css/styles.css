@@ -528,14 +528,13 @@ strong { font-weight: 500; }
   aspect-ratio: 810 / 1440;
   margin: var(--mat) auto;
 }
-/* Frame: a mist mat around the photo, edged with a fine gold line, like a mounted print */
+/* Frame: a mist mat around the photo, like a mounted print */
 .bodymap__figure::before {
   content: "";
   position: absolute;
   inset: calc(var(--mat) * -1);
   z-index: -1;
   background: var(--mist);
-  border: 1px solid var(--gold);
   box-shadow: 0 18px 40px -24px rgba(18, 41, 71, 0.35);
 }
 /* Thin white keyline just inside the photo edge */
