@@ -522,7 +522,7 @@ strong { font-weight: 500; }
   position: relative;
   container-type: inline-size; /* lets the leader lines measure to the photo edge (cqw) */
   /* leave room either side for the labels that sit outside the photo */
-  width: min(320px, calc(100% - 11rem));
+  width: min(320px, calc(100% - 16rem));
   aspect-ratio: 810 / 1440;
   margin: 0 auto;
 }
@@ -618,7 +618,12 @@ strong { font-weight: 500; }
   box-shadow: 0 0 0 1px var(--line);
   padding: clamp(1.5rem, 3vw, 2.25rem);
 }
-.bodymap__panel[hidden] { display: none; }
+/* All panels share one grid cell, so the box is always as tall as the longest
+   panel and the page doesn't shift when a dot with fewer treatments is chosen.
+   Hidden panels keep their space but are invisible and unreachable. */
+.bodymap__panels { display: grid; }
+.bodymap__panel { grid-area: 1 / 1; }
+.bodymap__panel[hidden] { display: block; visibility: hidden; }
 @media (prefers-reduced-motion: no-preference) {
   .bodymap__panel { animation: bodymap-in 0.3s ease; }
 }
