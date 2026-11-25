@@ -513,18 +513,38 @@ strong { font-weight: 500; }
    ========================================================================== */
 .bodymap {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
   margin-top: clamp(2rem, 4vw, 3rem);
 }
 .bodymap__figure {
+  --mat: 16px; /* width of the mat around the photo; labels clear it */
   position: relative;
+  isolation: isolate; /* keeps the mat behind the photo but inside this figure */
   container-type: inline-size; /* lets the leader lines measure to the photo edge (cqw) */
-  /* leave room either side for the labels that sit outside the photo */
-  width: min(320px, calc(100% - 16rem));
+  /* leave room either side for the mat and the labels that sit outside the photo */
+  width: min(340px, calc(100% - 15rem));
   aspect-ratio: 810 / 1440;
-  margin: 0 auto;
+  margin: var(--mat) auto;
+}
+/* Frame: a mist mat around the photo, edged with a fine gold line, like a mounted print */
+.bodymap__figure::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--mat) * -1);
+  z-index: -1;
+  background: var(--mist);
+  border: 1px solid var(--gold);
+  box-shadow: 0 18px 40px -24px rgba(18, 41, 71, 0.35);
+}
+/* Thin white keyline just inside the photo edge */
+.bodymap__figure::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  pointer-events: none;
 }
 .bodymap__img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
@@ -570,7 +590,7 @@ strong { font-weight: 500; }
 .hotspot__label {
   position: absolute;
   top: 50%;
-  left: calc(50% + (100 - var(--x)) * 1cqw + 12px);
+  left: calc(50% + (100 - var(--x)) * 1cqw + var(--mat) + 12px);
   transform: translateY(-50%);
   width: max-content;
   max-width: 8rem;
@@ -586,19 +606,19 @@ strong { font-weight: 500; }
   position: absolute;
   top: 50%;
   right: calc(100% + 4px);
-  width: calc((100 - var(--x)) * 1cqw + 8px - 7px); /* dot edge -> just short of the label */
+  width: calc((100 - var(--x)) * 1cqw + var(--mat) + 8px - 7px); /* dot edge -> just short of the label */
   height: 1px;
   background: var(--navy);
 }
 .hotspot[data-side="left"] .hotspot__label {
   left: auto;
-  right: calc(50% + var(--x) * 1cqw + 12px);
+  right: calc(50% + var(--x) * 1cqw + var(--mat) + 12px);
   text-align: right;
 }
 .hotspot[data-side="left"] .hotspot__label::before {
   right: auto;
   left: calc(100% + 4px);
-  width: calc(var(--x) * 1cqw + 8px - 7px);
+  width: calc(var(--x) * 1cqw + var(--mat) + 8px - 7px);
 }
 
 .hotspot:hover .hotspot__dot,
@@ -670,10 +690,10 @@ strong { font-weight: 500; }
 /* Phones: every label moves to the right of the photo, so the photo can stay
    wide (labels on both sides would squeeze it). Long labels wrap to two lines. */
 @media (max-width: 520px) {
-  .bodymap__figure { width: calc(100% - 5.25rem); margin-left: 0; }
+  .bodymap__figure { --mat: 10px; width: calc(100% - 5.25rem - 20px); margin-left: var(--mat); }
   .hotspot__label,
   .hotspot[data-side="left"] .hotspot__label {
-    left: calc(50% + (100 - var(--x)) * 1cqw + 10px);
+    left: calc(50% + (100 - var(--x)) * 1cqw + var(--mat) + 10px);
     right: auto;
     max-width: 4.5rem;
     font-size: 0.75rem;
@@ -683,7 +703,7 @@ strong { font-weight: 500; }
   .hotspot[data-side="left"] .hotspot__label::before {
     left: auto;
     right: calc(100% + 4px);
-    width: calc((100 - var(--x)) * 1cqw + 6px - 7px);
+    width: calc((100 - var(--x)) * 1cqw + var(--mat) + 6px - 7px);
   }
 }
 
