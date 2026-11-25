@@ -506,11 +506,10 @@ strong { font-weight: 500; }
 
 /* ==========================================================================
    [REVAMP:CHANGED] BODY MAP (index.html only)
-   A solid SVG silhouette with dots on each treatment area. Each dot has a
-   gold leader line running past the edge of the figure to a short label.
-   The panel on the right shows the hovered, focused, or tapped area.
-   Dots use unitless --x / --y (percent of the drawing) so the leader lines
-   can be measured in container units (cqw) from the dot to the figure edge.
+   The client's photo with dots on each treatment area. Each dot has a short
+   leader line to a label pill inside the photo (data-side picks the side
+   with more room). The panel on the right shows the hovered, focused, or
+   tapped area. Dots use unitless --x / --y (percent of the photo).
    ========================================================================== */
 .bodymap {
   display: grid;
@@ -519,18 +518,14 @@ strong { font-weight: 500; }
   align-items: center;
   margin-top: clamp(2rem, 4vw, 3rem);
 }
-.bodymap__stage {
-  background: var(--mist);
-  padding: clamp(2rem, 4vw, 3rem) 1rem;
-}
 .bodymap__figure {
   position: relative;
-  container-type: inline-size;
-  width: clamp(150px, 38vw, 240px);
-  aspect-ratio: 200 / 490;
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 810 / 1440;
   margin: 0 auto;
 }
-.bodymap__svg { display: block; width: 100%; height: 100%; color: var(--navy); }
+.bodymap__img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* Hotspot: 44px hit area centred on the dot */
 .hotspot {
@@ -551,7 +546,7 @@ strong { font-weight: 500; }
   inset: 15px;
   border-radius: 50%; /* a dot is round by nature; the no-rounded-corners rule is about boxes */
   background: var(--white);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 0 3px rgba(18, 41, 71, 0.35), 0 2px 6px rgba(18, 41, 71, 0.35);
   transition: background-color 0.25s ease, transform 0.25s ease;
 }
 .hotspot__dot::after { /* soft pulse ring so the dots read as interactive */
@@ -559,59 +554,51 @@ strong { font-weight: 500; }
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--navy);
   opacity: 0;
 }
 @media (prefers-reduced-motion: no-preference) {
   .hotspot__dot::after { animation: hotspot-pulse 2.4s ease-out infinite; }
 }
 @keyframes hotspot-pulse {
-  0% { transform: scale(0.6); opacity: 0.9; }
+  0% { transform: scale(0.6); opacity: 0.7; }
   100% { transform: scale(1.7); opacity: 0; }
 }
 
-/* Label sits just outside the figure; the leader line spans dot -> label */
+/* Label pill on a short leader line */
 .hotspot__label {
   position: absolute;
   top: 50%;
-  left: calc(50% + (100 - var(--x)) * 1cqw + 10px);
+  left: calc(100% + 10px);
   transform: translateY(-50%);
-  width: max-content;
-  max-width: 8rem;
+  white-space: nowrap;
+  padding: 0.3rem 0.6rem;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 1px 4px rgba(18, 41, 71, 0.18);
   color: var(--navy);
   font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1.2;
-  text-align: left;
-  transition: color 0.25s ease;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 .hotspot__label::before {
   content: "";
   position: absolute;
   top: 50%;
-  right: calc(100% + 4px);
-  width: calc((100 - var(--x)) * 1cqw + 6px - 7px);
+  right: 100%;
+  width: 25px;
   height: 1px;
-  background: var(--gold-light);
+  background: var(--navy);
 }
-.hotspot[data-side="left"] .hotspot__label {
-  left: auto;
-  right: calc(50% + var(--x) * 1cqw + 10px);
-  text-align: right;
-}
-.hotspot[data-side="left"] .hotspot__label::before {
-  right: auto;
-  left: calc(100% + 4px);
-  width: calc(var(--x) * 1cqw + 6px - 7px);
-}
+.hotspot[data-side="left"] .hotspot__label { left: auto; right: calc(100% + 10px); }
+.hotspot[data-side="left"] .hotspot__label::before { right: auto; left: 100%; }
 
 .hotspot:hover .hotspot__dot,
-.hotspot[aria-pressed="true"] .hotspot__dot { background: var(--gold-light); transform: scale(1.2); }
+.hotspot[aria-pressed="true"] .hotspot__dot { background: var(--gold); transform: scale(1.2); }
 .hotspot:hover .hotspot__label,
-.hotspot[aria-pressed="true"] .hotspot__label { color: var(--gold-ink); font-weight: 600; }
-.hotspot[aria-pressed="true"] .hotspot__label::before { background: var(--gold); }
+.hotspot[aria-pressed="true"] .hotspot__label { background: var(--navy); color: var(--white); }
 .hotspot:focus-visible { outline: none; }
-.hotspot:focus-visible .hotspot__dot { outline: 2px solid var(--gold-light); outline-offset: 4px; }
+.hotspot:focus-visible .hotspot__dot { outline: 2px solid var(--navy); outline-offset: 4px; }
 
 /* Panel */
 .bodymap__side { max-width: 34rem; }
@@ -666,10 +653,9 @@ strong { font-weight: 500; }
   .bodymap { grid-template-columns: 1fr; }
   .bodymap__side { max-width: none; }
 }
-/* Phones: the figure is slim, so labels still fit either side; long ones wrap */
+/* Phones: smaller pills; labels stay visible inside the photo */
 @media (max-width: 520px) {
-  .bodymap__stage { padding-inline: 0.5rem; }
-  .hotspot__label { font-size: 0.75rem; max-width: 5.25rem; }
+  .hotspot__label { font-size: 0.75rem; padding: 0.25rem 0.5rem; }
 }
 
 /* ==========================================================================
