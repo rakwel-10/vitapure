@@ -160,35 +160,37 @@
              The "See all" link scrolls to and highlights the matching Wellness / Face / Body tile.
              To move a dot, change its --x / --y. To add an area, add a button + a panel with matching ids. -->
         <div class="bodymap">
+          <div class="bodymap__stage">
           <figure class="bodymap__figure">
-            <!-- stock placeholder. source: https://unsplash.com/photos/Z72YujnOrlY (Unsplash License).
-                 If it's swapped, the dot positions need re-checking against the new photo. -->
-            <img class="bodymap__img" src="assets/img/improve-body-map.jpg" alt="A woman in a fitted workout set, marked with treatment areas" width="1200" height="1800" />
-            <button type="button" class="hotspot" data-area="face" data-side="left" style="--x: 39%; --y: 23.5%;" aria-controls="area-face" aria-pressed="true">
+            <!-- Solid silhouette drawn in SVG (no photo, no skin). Colour comes from CSS (currentColor).
+                 Dot positions are percentages of this 200 x 490 drawing. -->
+            <svg class="bodymap__svg" viewBox="0 0 200 490" aria-hidden="true" focusable="false"><path fill="currentColor" d="M100.0,18.0 C102.2,18.5 109.5,18.7 113.0,21.0 C116.5,23.3 119.3,27.5 121.0,32.0 C122.7,36.5 123.0,42.7 123.0,48.0 C123.0,53.3 121.0,58.3 121.0,64.0 C121.0,69.7 122.0,75.3 123.0,82.0 C124.0,88.7 127.7,99.2 127.0,104.0 C126.3,108.8 121.7,112.2 119.0,111.0 C116.3,109.8 114.2,100.0 111.0,97.0 C107.8,94.0 103.7,93.0 100.0,93.0 C96.3,93.0 92.2,94.0 89.0,97.0 C85.8,100.0 83.7,109.8 81.0,111.0 C78.3,112.2 73.7,108.8 73.0,104.0 C72.3,99.2 76.0,88.7 77.0,82.0 C78.0,75.3 79.0,69.7 79.0,64.0 C79.0,58.3 77.0,53.3 77.0,48.0 C77.0,42.7 77.3,36.5 79.0,32.0 C80.7,27.5 83.5,23.3 87.0,21.0 C90.5,18.7 97.8,18.5 100.0,18.0 Z"/><ellipse cx="100" cy="45" rx="16.5" ry="21" fill="currentColor"/><path fill="currentColor" d="M107.0,64.0 C107.2,66.0 107.0,72.3 108.0,76.0 C109.0,79.7 109.7,83.5 113.0,86.0 C116.3,88.5 122.8,89.3 128.0,91.0 C133.2,92.7 139.8,93.7 144.0,96.0 C148.2,98.3 150.8,100.8 153.0,105.0 C155.2,109.2 155.8,114.2 157.0,121.0 C158.2,127.8 158.8,137.5 160.0,146.0 C161.2,154.5 162.7,163.3 164.0,172.0 C165.3,180.7 166.7,189.7 168.0,198.0 C169.3,206.3 170.8,214.7 172.0,222.0 C173.2,229.3 174.2,236.7 175.0,242.0 C175.8,247.3 176.3,250.3 177.0,254.0 C177.7,257.7 179.0,260.3 179.0,264.0 C179.0,267.7 178.3,273.3 177.0,276.0 C175.7,278.7 172.8,281.0 171.0,280.0 C169.2,279.0 167.2,273.7 166.0,270.0 C164.8,266.3 165.0,263.0 164.0,258.0 C163.0,253.0 161.5,247.3 160.0,240.0 C158.5,232.7 156.7,222.3 155.0,214.0 C153.3,205.7 151.5,198.0 150.0,190.0 C148.5,182.0 147.5,174.7 146.0,166.0 C144.5,157.3 141.7,140.7 141.0,138.0 C140.3,135.3 142.3,145.5 142.0,150.0 C141.7,154.5 140.8,159.2 139.0,165.0 C137.2,170.8 133.3,178.3 131.0,185.0 C128.7,191.7 125.7,198.7 125.0,205.0 C124.3,211.3 125.5,217.0 127.0,223.0 C128.5,229.0 132.0,235.0 134.0,241.0 C136.0,247.0 138.0,252.3 139.0,259.0 C140.0,265.7 140.3,272.7 140.0,281.0 C139.7,289.3 138.3,299.7 137.0,309.0 C135.7,318.3 133.7,328.2 132.0,337.0 C130.3,345.8 127.7,353.5 127.0,362.0 C126.3,370.5 128.0,379.0 128.0,388.0 C128.0,397.0 128.0,406.3 127.0,416.0 C126.0,425.7 123.3,438.3 122.0,446.0 C120.7,453.7 118.7,457.7 119.0,462.0 C119.3,466.3 123.5,469.0 124.0,472.0 C124.5,475.0 125.0,478.7 122.0,480.0 C119.0,481.3 109.0,482.3 106.0,480.0 C103.0,477.7 104.2,471.7 104.0,466.0 C103.8,460.3 105.0,454.3 105.0,446.0 C105.0,437.7 104.0,425.7 104.0,416.0 C104.0,406.3 104.8,397.0 105.0,388.0 C105.2,379.0 105.2,370.7 105.0,362.0 C104.8,353.3 104.3,345.3 104.0,336.0 C103.7,326.7 103.7,313.7 103.0,306.0 C102.3,298.3 101.0,290.0 100.0,290.0 C99.0,290.0 97.7,298.3 97.0,306.0 C96.3,313.7 96.3,326.7 96.0,336.0 C95.7,345.3 95.2,353.3 95.0,362.0 C94.8,370.7 94.8,379.0 95.0,388.0 C95.2,397.0 96.0,406.3 96.0,416.0 C96.0,425.7 95.0,437.7 95.0,446.0 C95.0,454.3 96.2,460.3 96.0,466.0 C95.8,471.7 97.0,477.7 94.0,480.0 C91.0,482.3 81.0,481.3 78.0,480.0 C75.0,478.7 75.5,475.0 76.0,472.0 C76.5,469.0 80.7,466.3 81.0,462.0 C81.3,457.7 79.3,453.7 78.0,446.0 C76.7,438.3 74.0,425.7 73.0,416.0 C72.0,406.3 72.0,397.0 72.0,388.0 C72.0,379.0 73.7,370.5 73.0,362.0 C72.3,353.5 69.7,345.8 68.0,337.0 C66.3,328.2 64.3,318.3 63.0,309.0 C61.7,299.7 60.3,289.3 60.0,281.0 C59.7,272.7 60.0,265.7 61.0,259.0 C62.0,252.3 64.0,247.0 66.0,241.0 C68.0,235.0 71.5,229.0 73.0,223.0 C74.5,217.0 75.7,211.3 75.0,205.0 C74.3,198.7 71.3,191.7 69.0,185.0 C66.7,178.3 62.8,170.8 61.0,165.0 C59.2,159.2 58.3,154.5 58.0,150.0 C57.7,145.5 59.7,135.3 59.0,138.0 C58.3,140.7 55.5,157.3 54.0,166.0 C52.5,174.7 51.5,182.0 50.0,190.0 C48.5,198.0 46.7,205.7 45.0,214.0 C43.3,222.3 41.5,232.7 40.0,240.0 C38.5,247.3 37.0,253.0 36.0,258.0 C35.0,263.0 35.2,266.3 34.0,270.0 C32.8,273.7 30.8,279.0 29.0,280.0 C27.2,281.0 24.3,278.7 23.0,276.0 C21.7,273.3 21.0,267.7 21.0,264.0 C21.0,260.3 22.3,257.7 23.0,254.0 C23.7,250.3 24.2,247.3 25.0,242.0 C25.8,236.7 26.8,229.3 28.0,222.0 C29.2,214.7 30.7,206.3 32.0,198.0 C33.3,189.7 34.7,180.7 36.0,172.0 C37.3,163.3 38.8,154.5 40.0,146.0 C41.2,137.5 41.8,127.8 43.0,121.0 C44.2,114.2 44.8,109.2 47.0,105.0 C49.2,100.8 51.8,98.3 56.0,96.0 C60.2,93.7 66.8,92.7 72.0,91.0 C77.2,89.3 83.7,88.5 87.0,86.0 C90.3,83.5 91.0,79.7 92.0,76.0 C93.0,72.3 92.8,66.0 93.0,64.0 Z"/></svg>
+            <button type="button" class="hotspot" data-area="face" data-side="left" style="--x: 50; --y: 9.4;" aria-controls="area-face" aria-pressed="true">
               <span class="hotspot__dot" aria-hidden="true"></span>
               <span class="hotspot__label">Face</span>
             </button>
-            <button type="button" class="hotspot" data-area="arms" data-side="right" style="--x: 63%; --y: 39%;" aria-controls="area-arms" aria-pressed="false">
+            <button type="button" class="hotspot" data-area="arms" data-side="right" style="--x: 72.5; --y: 28;" aria-controls="area-arms" aria-pressed="false">
               <span class="hotspot__dot" aria-hidden="true"></span>
-              <span class="hotspot__label">Arms &amp; underarms</span>
+              <span class="hotspot__label">Arms</span>
             </button>
-            <button type="button" class="hotspot" data-area="wellness" data-side="left" style="--x: 29%; --y: 57%;" aria-controls="area-wellness" aria-pressed="false">
+            <button type="button" class="hotspot" data-area="wellness" data-side="left" style="--x: 20.5; --y: 39.5;" aria-controls="area-wellness" aria-pressed="false">
               <span class="hotspot__dot" aria-hidden="true"></span>
               <span class="hotspot__label">Wellness</span>
             </button>
-            <button type="button" class="hotspot" data-area="stomach" data-side="right" style="--x: 45%; --y: 58%;" aria-controls="area-stomach" aria-pressed="false">
+            <button type="button" class="hotspot" data-area="stomach" data-side="right" style="--x: 50; --y: 40.8;" aria-controls="area-stomach" aria-pressed="false">
               <span class="hotspot__dot" aria-hidden="true"></span>
-              <span class="hotspot__label">Stomach &amp; waist</span>
+              <span class="hotspot__label">Stomach</span>
             </button>
-            <button type="button" class="hotspot" data-area="pelvic" data-side="left" style="--x: 42.5%; --y: 72%;" aria-controls="area-pelvic" aria-pressed="false">
+            <button type="button" class="hotspot" data-area="pelvic" data-side="left" style="--x: 50; --y: 53.5;" aria-controls="area-pelvic" aria-pressed="false">
               <span class="hotspot__dot" aria-hidden="true"></span>
               <span class="hotspot__label">Pelvic floor</span>
             </button>
-            <button type="button" class="hotspot" data-area="thighs" data-side="right" style="--x: 39%; --y: 89%;" aria-controls="area-thighs" aria-pressed="false">
+            <button type="button" class="hotspot" data-area="thighs" data-side="right" style="--x: 59; --y: 65.3;" aria-controls="area-thighs" aria-pressed="false">
               <span class="hotspot__dot" aria-hidden="true"></span>
-              <span class="hotspot__label">Thighs, buttocks &amp; legs</span>
+              <span class="hotspot__label">Thighs &amp; legs</span>
             </button>
           </figure>
+          </div>
 
           <div class="bodymap__side">
             <p class="bodymap__hint">Hover over or tap a dot to see what we treat in that area.</p>

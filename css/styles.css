@@ -506,29 +506,37 @@ strong { font-weight: 500; }
 
 /* ==========================================================================
    [REVAMP:CHANGED] BODY MAP (index.html only)
-   A photo with dots on each treatment area; the panel on the right shows
-   the hovered, focused, or tapped area. Dots are placed with --x / --y.
+   A solid SVG silhouette with dots on each treatment area. Each dot has a
+   gold leader line running past the edge of the figure to a short label.
+   The panel on the right shows the hovered, focused, or tapped area.
+   Dots use unitless --x / --y (percent of the drawing) so the leader lines
+   can be measured in container units (cqw) from the dot to the figure edge.
    ========================================================================== */
 .bodymap {
   display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
   margin-top: clamp(2rem, 4vw, 3rem);
 }
+.bodymap__stage {
+  background: var(--mist);
+  padding: clamp(2rem, 4vw, 3rem) 1rem;
+}
 .bodymap__figure {
   position: relative;
-  max-width: 480px;
-  width: 100%;
-  justify-self: end;
+  container-type: inline-size;
+  width: clamp(150px, 38vw, 240px);
+  aspect-ratio: 200 / 490;
+  margin: 0 auto;
 }
-.bodymap__img { display: block; width: 100%; height: auto; }
+.bodymap__svg { display: block; width: 100%; height: 100%; color: var(--navy); }
 
-/* Hotspot: a 44px hit area with a small dot, plus a label on a short leader line */
+/* Hotspot: 44px hit area centred on the dot */
 .hotspot {
   position: absolute;
-  left: var(--x);
-  top: var(--y);
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
   width: 44px;
   height: 44px;
   margin: -22px 0 0 -22px;
@@ -540,10 +548,10 @@ strong { font-weight: 500; }
 }
 .hotspot__dot {
   position: absolute;
-  inset: 13px;
+  inset: 15px;
   border-radius: 50%; /* a dot is round by nature; the no-rounded-corners rule is about boxes */
   background: var(--white);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45), 0 2px 8px rgba(18, 41, 71, 0.35);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
   transition: background-color 0.25s ease, transform 0.25s ease;
 }
 .hotspot__dot::after { /* soft pulse ring so the dots read as interactive */
@@ -551,7 +559,7 @@ strong { font-weight: 500; }
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.85);
   opacity: 0;
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -559,40 +567,51 @@ strong { font-weight: 500; }
 }
 @keyframes hotspot-pulse {
   0% { transform: scale(0.6); opacity: 0.9; }
-  100% { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.7); opacity: 0; }
 }
+
+/* Label sits just outside the figure; the leader line spans dot -> label */
 .hotspot__label {
   position: absolute;
   top: 50%;
-  left: calc(100% + 22px);
+  left: calc(50% + (100 - var(--x)) * 1cqw + 10px);
   transform: translateY(-50%);
-  padding: 0.3rem 0.65rem;
-  white-space: nowrap;
-  background: rgba(255, 255, 255, 0.94);
+  width: max-content;
+  max-width: 8rem;
   color: var(--navy);
   font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1.2;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  text-align: left;
+  transition: color 0.25s ease;
 }
-.hotspot__label::before { /* leader line from the dot to the label */
+.hotspot__label::before {
   content: "";
   position: absolute;
   top: 50%;
-  right: 100%;
-  width: 22px;
+  right: calc(100% + 4px);
+  width: calc((100 - var(--x)) * 1cqw + 6px - 7px);
   height: 1px;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--gold-light);
 }
-.hotspot[data-side="left"] .hotspot__label { left: auto; right: calc(100% + 22px); }
-.hotspot[data-side="left"] .hotspot__label::before { right: auto; left: 100%; }
+.hotspot[data-side="left"] .hotspot__label {
+  left: auto;
+  right: calc(50% + var(--x) * 1cqw + 10px);
+  text-align: right;
+}
+.hotspot[data-side="left"] .hotspot__label::before {
+  right: auto;
+  left: calc(100% + 4px);
+  width: calc(var(--x) * 1cqw + 6px - 7px);
+}
 
 .hotspot:hover .hotspot__dot,
-.hotspot[aria-pressed="true"] .hotspot__dot { background: var(--gold); transform: scale(1.15); }
+.hotspot[aria-pressed="true"] .hotspot__dot { background: var(--gold-light); transform: scale(1.2); }
 .hotspot:hover .hotspot__label,
-.hotspot[aria-pressed="true"] .hotspot__label { background: var(--navy); color: var(--white); }
+.hotspot[aria-pressed="true"] .hotspot__label { color: var(--gold-ink); font-weight: 600; }
+.hotspot[aria-pressed="true"] .hotspot__label::before { background: var(--gold); }
 .hotspot:focus-visible { outline: none; }
-.hotspot:focus-visible .hotspot__dot { outline: 2px solid var(--white); outline-offset: 4px; }
+.hotspot:focus-visible .hotspot__dot { outline: 2px solid var(--gold-light); outline-offset: 4px; }
 
 /* Panel */
 .bodymap__side { max-width: 34rem; }
@@ -645,12 +664,12 @@ strong { font-weight: 500; }
 
 @media (max-width: 860px) {
   .bodymap { grid-template-columns: 1fr; }
-  .bodymap__figure { justify-self: center; max-width: 420px; }
   .bodymap__side { max-width: none; }
 }
-/* Phones: labels would crowd the photo, so show dots only; the panel names the area */
+/* Phones: the figure is slim, so labels still fit either side; long ones wrap */
 @media (max-width: 520px) {
-  .hotspot__label { display: none; }
+  .bodymap__stage { padding-inline: 0.5rem; }
+  .hotspot__label { font-size: 0.75rem; max-width: 5.25rem; }
 }
 
 /* ==========================================================================
